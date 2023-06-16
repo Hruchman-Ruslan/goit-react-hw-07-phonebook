@@ -4,11 +4,24 @@ import { Filter } from 'components/Filter/Filter';
 import { Notification } from '../Notification/Notification';
 
 import { Container, Section, Title, TitleContacts } from '../index';
-
-import { useContacts } from 'redux/contacts/useContacts';
+import {
+  selectContacts,
+  selectError,
+  selectIsLoading,
+} from 'redux/contacts/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchContacts } from 'redux/contacts/operations';
 
 export const App = () => {
-  const { contacts } = useContacts();
+  const contacts = useSelector(selectContacts);
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   return (
     <Container>
@@ -20,6 +33,7 @@ export const App = () => {
       <Section>
         <TitleContacts>Contacts</TitleContacts>
         <Filter />
+        {isLoading && !error && <b>Request in progress...</b>}
         {contacts.length > 0 ? (
           <ContactList />
         ) : (
@@ -29,6 +43,38 @@ export const App = () => {
     </Container>
   );
 };
+
+// import { FormContact } from 'components/Form/Form';
+// import { ContactList } from 'components/Contacts/Contacts';
+// import { Filter } from 'components/Filter/Filter';
+// import { Notification } from '../Notification/Notification';
+
+// import { Container, Section, Title, TitleContacts } from '../index';
+
+// import { useContacts } from 'redux/contacts/useContacts';
+
+// export const App = () => {
+//   const { contacts } = useContacts();
+
+//   return (
+//     <Container>
+//       <Section>
+//         <Title>Phonebook</Title>
+//         <FormContact />
+//       </Section>
+
+//       <Section>
+//         <TitleContacts>Contacts</TitleContacts>
+//         <Filter />
+//         {contacts.length > 0 ? (
+//           <ContactList />
+//         ) : (
+//           <Notification message="There is no feedback" />
+//         )}
+//       </Section>
+//     </Container>
+//   );
+// };
 
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 

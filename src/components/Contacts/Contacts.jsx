@@ -2,10 +2,16 @@ import PropTypes from 'prop-types';
 
 import { List, Item, Text, Button } from './Contacts.styled';
 
-import { useContacts } from 'redux/contacts/useContacts';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteContact } from 'redux/contacts/operations';
+import { selectContacts, selectFilter } from 'redux/contacts/selectors';
 
 export const ContactList = () => {
-  const { contacts, filter, deleteContact } = useContacts();
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectFilter);
+
+  const handleDelete = id => dispatch(deleteContact(id));
 
   const getFilterName = () => {
     const normalisedFilter = filter.toLowerCase();
@@ -15,7 +21,6 @@ export const ContactList = () => {
   };
 
   const list = getFilterName();
-  console.log(list);
 
   return (
     <List>
@@ -24,7 +29,7 @@ export const ContactList = () => {
           <Text>
             {name}: {number}
           </Text>
-          <Button type="button" onClick={() => deleteContact(id)}>
+          <Button type="button" onClick={() => handleDelete(id)}>
             Delete
           </Button>
         </Item>

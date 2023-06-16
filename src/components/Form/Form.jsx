@@ -2,7 +2,9 @@ import { Formik } from 'formik';
 import { object, string } from 'yup';
 
 import { FormikForm, Label, FormikInput, Button, Error } from './Form.styled';
-import { useContacts } from 'redux/contacts/useContacts';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectContacts } from 'redux/contacts/selectors';
+import { addContact } from 'redux/contacts/operations';
 
 const phoneRegExp =
   /^(?:\+38)?(?:\(0\d{2}\)|0\d{2})[ -]?\d{3}[ -]?\d{2}[ -]?\d{2}$/;
@@ -23,7 +25,9 @@ const INITIAL_STATE = {
 };
 
 export const FormContact = () => {
-  const { addContact, contacts } = useContacts();
+  const dispatch = useDispatch();
+
+  const contacts = useSelector(selectContacts);
 
   const handleSubmit = (values, { resetForm }) => {
     const existingContact = contacts.find(
@@ -33,7 +37,7 @@ export const FormContact = () => {
       alert(`${values.name} is already in contacts.`);
       return;
     }
-    addContact({ ...values });
+    dispatch(addContact({ ...values }));
     resetForm();
   };
 
