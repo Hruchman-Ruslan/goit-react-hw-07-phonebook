@@ -33,7 +33,7 @@ import {
   selectFilterName,
   selectIsLoading,
 } from './selectors';
-import { deleteContact } from './operations';
+import { addContact, deleteContact } from './operations';
 import { filterContact } from './filterSlice';
 
 export const useContacts = () => {
@@ -51,6 +51,19 @@ export const useContacts = () => {
     dispatch(filterContact(e.target.value));
   };
 
+  const handleNotificationForm = values => {
+    const existingContact = contacts.find(
+      contact => contact.number === values.number
+    );
+    if (existingContact) {
+      alert(
+        `Sorry ${values.name}, this number is already registered, please enter another one.`
+      );
+      return;
+    }
+    dispatch(addContact({ ...values }));
+  };
+
   return {
     contacts,
     filter,
@@ -60,5 +73,6 @@ export const useContacts = () => {
     handleDelete,
     contactsFilterName,
     handleFilter,
+    handleNotificationForm,
   };
 };

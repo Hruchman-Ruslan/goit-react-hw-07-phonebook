@@ -2,7 +2,6 @@ import { Formik } from 'formik';
 import { object, string } from 'yup';
 
 import { FormikForm, Label, FormikInput, Button, Error } from './Form.styled';
-import { addContact } from 'redux/contacts/operations';
 import { useContacts } from 'redux/contacts/useContacts';
 
 const phoneRegExp =
@@ -24,17 +23,10 @@ const INITIAL_STATE = {
 };
 
 export const FormContact = () => {
-  const { dispatch, contacts } = useContacts();
+  const { handleNotificationForm } = useContacts();
 
   const handleSubmit = (values, { resetForm }) => {
-    // const existingContact = contacts.find(
-    //   contact => contact.name.toLowerCase() === values.name.toLowerCase()
-    // );
-    // if (existingContact) {
-    //   alert(`${values.name} is already in contacts.`);
-    //   return;
-    // }
-    dispatch(addContact({ ...values }));
+    handleNotificationForm(values);
     resetForm();
   };
 
