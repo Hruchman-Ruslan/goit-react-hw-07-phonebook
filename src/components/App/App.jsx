@@ -4,20 +4,16 @@ import { Filter } from 'components/Filter/Filter';
 import { Notification } from '../Notification/Notification';
 
 import { Container, Section, Title, TitleContacts } from '../index';
-import {
-  selectContacts,
-  selectError,
-  selectIsLoading,
-} from 'redux/contacts/selectors';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { useEffect } from 'react';
 import { fetchContacts } from 'redux/contacts/operations';
+import { useContacts } from 'redux/contacts/useContacts';
+import { useDispatch } from 'react-redux';
 
 export const App = () => {
-  const contacts = useSelector(selectContacts);
+  const { contacts, isLoading, error } = useContacts();
+
   const dispatch = useDispatch();
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
 
   useEffect(() => {
     dispatch(fetchContacts());

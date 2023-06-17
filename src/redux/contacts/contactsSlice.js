@@ -44,9 +44,76 @@
 
 //=============== After ========================
 
-import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+// import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 
-import { addContact, deleteContact, fetchContacts } from './operations';
+// import { addContact, deleteContact, fetchContacts } from './operations';
+
+// const contactsSlice = createSlice({
+//   name: 'contacts',
+//   initialState: {
+//     items: [],
+//     isLoading: false,
+//     error: null,
+//   },
+//   extraReducers: builder =>
+//     builder
+//       //=============== fulfilled ========================
+//       .addCase(fetchContacts.fulfilled, (state, { payload }) => {
+//         state.items = payload;
+//       })
+//       .addCase(addContact.fulfilled, (state, { payload }) => {
+//         state.items.push(payload);
+//       })
+//       .addCase(deleteContact.fulfilled, (state, { payload }) => {
+//         const index = state.items.findIndex(
+//           contact => contact.id === payload.id
+//         );
+//         state.items.splice(index, 1);
+//       })
+//       .addMatcher(
+//         isAnyOf(
+//           fetchContacts.fulfilled,
+//           addContact.fulfilled,
+//           deleteContact.fulfilled
+//         ),
+//         state => {
+//           state.isLoading = false;
+//           state.error = null;
+//         }
+//       )
+//       //=============== pending ========================
+//       .addMatcher(
+//         isAnyOf(
+//           fetchContacts.pending,
+//           addContact.pending,
+//           deleteContact.pending
+//         ),
+//         state => {
+//           state.isLoading = true;
+//         }
+//       )
+//       //=============== rejected ========================
+//       .addMatcher(
+//         isAnyOf(
+//           fetchContacts.rejected,
+//           addContact.rejected,
+//           deleteContact.rejected
+//         ),
+//         (state, { payload }) => {
+//           state.isLoading = false;
+//           state.error = payload;
+//         }
+//       ),
+// });
+
+// export const contactReducer = contactsSlice.reducer;
+
+//=============== After javascript 😈 ninja style ========================
+
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { addContact, fetchContacts, deleteContact } from './operations';
+
+const ninjaActions = [addContact, deleteContact, fetchContacts];
 
 const contactsSlice = createSlice({
   name: 'contacts',
@@ -71,11 +138,7 @@ const contactsSlice = createSlice({
         state.items.splice(index, 1);
       })
       .addMatcher(
-        isAnyOf(
-          fetchContacts.fulfilled,
-          addContact.fulfilled,
-          deleteContact.fulfilled
-        ),
+        isAnyOf(...ninjaActions.map(action => action.fulfilled)),
         state => {
           state.isLoading = false;
           state.error = null;
@@ -83,22 +146,14 @@ const contactsSlice = createSlice({
       )
       //=============== pending ========================
       .addMatcher(
-        isAnyOf(
-          fetchContacts.pending,
-          addContact.pending,
-          deleteContact.pending
-        ),
+        isAnyOf(...ninjaActions.map(action => action.pending)),
         state => {
           state.isLoading = true;
         }
       )
       //=============== rejected ========================
       .addMatcher(
-        isAnyOf(
-          fetchContacts.rejected,
-          addContact.rejected,
-          deleteContact.rejected
-        ),
+        isAnyOf(...ninjaActions.map(action => action.rejected)),
         (state, { payload }) => {
           state.isLoading = false;
           state.error = payload;

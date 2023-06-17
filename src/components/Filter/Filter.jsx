@@ -1,17 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { Label, Input } from './Filter.styled';
 
-import { filterContact } from 'redux/contacts/filterSlice';
-
-import { selectFilter } from 'redux/contacts/selectors';
+import { useContacts } from 'redux/contacts/useContacts';
 
 export const Filter = () => {
-  const filter = useSelector(selectFilter);
-  const dispatch = useDispatch();
-
-  const handleFilter = e => {
-    dispatch(filterContact(e.target.value));
-  };
+  const { filter, handleFilter } = useContacts();
 
   return (
     <Label>
