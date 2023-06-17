@@ -14,7 +14,7 @@ const schema = object().shape({
     .max(12, 'must be no more than 12 characters')
     .required('This field is required'),
   number: string()
-    .matches(phoneRegExp, 'Please enter a valid phone number +380')
+    .matches(phoneRegExp, 'Please enter a valid phone number')
     .required('A phone number is required'),
 });
 
@@ -24,9 +24,16 @@ const INITIAL_STATE = {
 };
 
 export const FormContact = () => {
-  const { dispatch } = useContacts();
+  const { dispatch, contacts } = useContacts();
 
   const handleSubmit = (values, { resetForm }) => {
+    // const existingContact = contacts.find(
+    //   contact => contact.name.toLowerCase() === values.name.toLowerCase()
+    // );
+    // if (existingContact) {
+    //   alert(`${values.name} is already in contacts.`);
+    //   return;
+    // }
     dispatch(addContact({ ...values }));
     resetForm();
   };
