@@ -13,7 +13,7 @@ const schema = object().shape({
     .max(12, 'must be no more than 12 characters')
     .required('This field is required'),
   number: string()
-    .matches(phoneRegExp, 'Please enter a valid phone number')
+    .matches(phoneRegExp, 'Please enter a valid phone number +380')
     .required('A phone number is required'),
 });
 
